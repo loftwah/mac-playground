@@ -307,13 +307,15 @@ gpg --full-generate-key
 > ```bash
 > # Find your GPG key ID
 > gpg --list-secret-keys --keyid-format=long
-
-> # In this example, 1234ABCD is the GPG key ID
->
-> git config --global user.signingkey 1234ABCD
-> git config --global commit.gpgsign true
->
 > ```
+>
+> **In this example**, 1234ABCD is the GPG key ID
+>
+> ```bash
+> git config --global user.signingkey 1234ABCD`
+> git config --global commit.gpgsign true`
+> ```
+>
 
 ---
 
