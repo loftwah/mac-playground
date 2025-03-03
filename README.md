@@ -26,7 +26,11 @@ A comprehensive guide for setting up a modern macOS development environment with
 To make setup as seamless as possible, use this one-liner to install Homebrew and all tools listed in a `Brewfile`:
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && brew bundle --file=~/Brewfile
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+echo >> /Users/username/.zprofile
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/username/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+brew bundle --file=~/Brewfile
 ```
 
 **New Addition**: Here’s a sample `Brewfile` to include all tools from this guide. Save it as `~/Brewfile`:
