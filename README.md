@@ -41,7 +41,6 @@ tap "homebrew/bundle"
 
 # Core formulae
 brew "bat"
-brew "exa"
 brew "fd"
 brew "ripgrep"
 brew "fzf"
