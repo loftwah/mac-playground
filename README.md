@@ -287,6 +287,34 @@ echo '#!/bin/bash\nopen ~/dev' > ~/.raycast/scripts/dev.sh
 chmod +x ~/.raycast/scripts/dev.sh
 ```
 
+### Finder Tweaks for Windows Users
+
+To make Finder feel more like Windows Explorer, tweak these built-in settings—no extra software needed. These changes will give you a familiar layout and workflow if you’re coming from Windows:
+
+1. **Show Full Paths** (like Windows breadcrumbs):
+   - Open Finder, go to `View > Show Path Bar`. This adds a clickable folder hierarchy at the bottom, similar to Windows’ address bar.
+   - Optional: For the full path in the title bar, run this in Terminal:
+
+     ```bash
+     defaults write com.apple.finder _FXShowPosixPathInTitle -bool YES; killall Finder
+     ```
+
+2. **Show All File Extensions** (like turning off "Hide extensions for known types"):
+   - Go to Finder > Preferences > Advanced.
+   - Check "Show all filename extensions" so files like `document.txt` don’t hide the `.txt`.
+
+3. **Quick Access to Drives** (like "This PC"):
+   - Finder > Preferences > General > Set "New Finder windows show" to "Macintosh HD" (instead of "Recents").
+   - Finder > Preferences > Sidebar > Check "Hard disks" and "External disks" to see all drives in the sidebar.
+
+4. **Show Item Info** (like Windows status bar):
+   - In Finder, go to `View > Show Status Bar`. This shows folder size and item count at the bottom, like Explorer’s details.
+
+5. **Open Folders in New Windows** (like Windows default behavior):
+   - Finder > Preferences > General > Uncheck "Open folders in tabs instead of new windows" to mimic Windows’ separate window style.
+
+> **Tip**: Drag frequently used folders (e.g., Documents, Downloads) to the sidebar for quick access, like pinned items in Windows. Use `Command + Up` to go up a folder (similar to Backspace in Explorer).
+
 ---
 
 ## Maintenance & Optimization 🧹
