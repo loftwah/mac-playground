@@ -1,6 +1,6 @@
 # Loftwah's Ultimate Mac Dev Setup (2025 Edition) 🚀
 
-A comprehensive guide for setting up a modern macOS development environment with best-in-class tools and configurations.
+A comprehensive guide for setting up a modern macOS development environment with cutting-edge tools and optimized workflows.
 
 > "Because life's too short for suboptimal dev environments" 🧙‍♂️
 
@@ -15,17 +15,84 @@ A comprehensive guide for setting up a modern macOS development environment with
 - [Advanced Configurations](#advanced-configurations)
 - [Maintenance & Optimization](#maintenance--optimization)
 - [Troubleshooting](#troubleshooting)
-- [Pro Tips](#pro-tips-)
+- [Pro Tips](#pro-tips)
 
 ---
 
 ## Quick Start 🏃‍♂️
 
-### One-line Setup Script
+### One-line Setup Script with Brewfile
+
+To make setup as seamless as possible, use this one-liner to install Homebrew and all tools listed in a `Brewfile`:
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && brew bundle install
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && brew bundle --file=~/Brewfile
 ```
+
+**New Addition**: Here’s a sample `Brewfile` to include all tools from this guide. Save it as `~/Brewfile`:
+
+```ruby
+# ~/Brewfile
+tap "homebrew/bundle"
+
+# Core formulae
+brew "bat"
+brew "exa"
+brew "fd"
+brew "ripgrep"
+brew "fzf"
+brew "zoxide"
+brew "delta"
+brew "gh"
+brew "lazygit"
+brew "mise"
+brew "uv"
+brew "tfenv"
+brew "opentofu"
+brew "kubectl"
+brew "k9s"
+brew "kubectx"
+brew "helm"
+brew "awscli"
+brew "aws-nuke"
+brew "aws-vault"
+brew "steampipe"
+brew "session-manager-plugin"
+brew "gnupg"
+brew "age"
+brew "just"
+brew "difftastic"
+brew "hyperfine"
+brew "git-absorb"
+brew "git-branchless"
+brew "htop"
+brew "btop"
+brew "glances"
+brew "speedtest-cli"
+brew "neofetch"
+brew "vector"
+brew "grafana"
+brew "prometheus"
+brew "ncdu"
+
+# Casks
+cask "raycast"
+cask "iterm2"
+cask "orbstack"
+cask "tableplus"
+cask "dbeaver-community"
+cask "1password-cli"
+cask "lens"
+
+# Optional tools (uncomment if needed)
+# brew "fish"         # Alternative shell
+# cask "docker"       # Docker Desktop
+# cask "utm"          # Virtualization
+# cask "wireshark"    # Network analysis
+# cask "little-snitch" # Firewall
+```
+
+> **Tip**: Customize the `Brewfile` to your needs and run `brew bundle install` to install everything at once!
 
 ---
 
@@ -35,82 +102,42 @@ A comprehensive guide for setting up a modern macOS development environment with
 
 #### Homebrew
 
+Install essential command-line tools and GUI apps:
+
 ```bash
-# Essential formulae
-brew install \
-  bat \         # Better cat
-  exa \         # Modern ls
-  fd \          # Better find
-  ripgrep \     # Better grep
-  fzf \         # Fuzzy finder
-  zoxide \      # Better cd
-  delta \       # Better diff
-  gh \          # GitHub CLI
-  lazygit       # Terminal UI for git
-
-# Must-have casks
-brew install --cask \
-  raycast \     # Spotlight replacement
-  iterm2 \      # iTerm2
-  orbstack      # Docker/Linux VM replacement
-
-# ADDITION: database GUI tools
-brew install --cask \
-  tableplus \   # Modern DB GUI
-  dbeaver-community
+# Installed via Brewfile above, but here’s the manual list:
+brew install bat exa fd ripgrep fzf zoxide delta gh lazygit
+brew install --cask raycast iterm2 orbstack tableplus dbeaver-community
 ```
 
 ### Terminal Setup
 
-#### iTerm2 + Oh My Zsh
+#### iTerm2 + Oh My Zsh (or Alternatives)
 
-```bash
-# 1. Install Oh My Zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+1. **Install Oh My Zsh**:
 
-# 2. (Optional) Install recommended plugins
-brew install zsh-autosuggestions zsh-syntax-highlighting zsh-completions
+   ```bash
+   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+   brew install zsh-autosuggestions zsh-syntax-highlighting zsh-completions
+   ```
 
-# 3. Open iTerm2 > Preferences > Profiles > Command to ensure it uses zsh.
-# 4. Configure ~/.zshrc:
-```
+2. **Configure `.zshrc`**:
 
-Here’s a sample `.zshrc` snippet to enable common plugins:
+   ```bash
+   # ~/.zshrc
+   ZSH_THEME="agnoster"  # Try "powerlevel10k" for a modern look
+   plugins=(git zsh-autosuggestions zsh-syntax-highlighting zsh-completions fzf aws docker)
+   source $ZSH/oh-my-zsh.sh
+   ```
 
-```bash
-# ~/.zshrc
+3. **Optional Alternative**: Install Fish for a simpler, user-friendly shell:
 
-# Set your ZSH theme (pick one you like; "robbyrussell" is default)
-ZSH_THEME="robbyrussell"
+   ```bash
+   brew install fish
+   # Add to /etc/shells and set as default: chsh -s /opt/homebrew/bin/fish
+   ```
 
-# Oh My Zsh plugins
-plugins=(
-  git          # Handy Git aliases
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-  zsh-completions
-  fzf          # Integrate fzf for fuzzy searching
-  aws          # Simple AWS CLI completions
-  docker       # Docker aliases
-)
-
-source $ZSH/oh-my-zsh.sh
-
-# If you installed these plugins via Homebrew, point zsh to them:
-# For example:
-#   source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-#   source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-#   fpath+=(/opt/homebrew/share/zsh-completions)
-
-# Make sure these lines are placed after 'oh-my-zsh.sh' if needed,
-# especially for zsh-autosuggestions and syntax-highlighting.
-```
-
-> **Tip**: If you see errors about `insecure directories`, run:
->
-> ```bash
-> compaudit | xargs chmod g-w
-> ```
+> **Tip**: Customize your theme with `p10k configure` if using Powerlevel10k!
 
 ---
 
@@ -118,91 +145,40 @@ source $ZSH/oh-my-zsh.sh
 
 ### Language Version Manager
 
-#### mise (Modern Runtime Manager)
+#### mise
 
 ```bash
-# Install mise
 brew install mise
-
-# Add to ~/.zshrc
-eval "$(mise activate zsh)"
-
-# Setup languages
-mise use --global node@20
-mise use --global python@3.12
-mise use --global ruby@3.3
-mise use --global go@1.22
-mise use --global rust@stable
-
-# Install tools
-mise install node@20 python@3.12 ruby@3.3 go@1.22 rust@stable
-
-# Verify installations
+echo 'eval "$(mise activate zsh)"' >> ~/.zshrc
+mise use --global node@20 python@3.12 ruby@3.3 go@1.22 rust@stable java@21
+mise install
 mise ls
-mise trust
 ```
+
+**New Addition**: Added Java for broader language support.
 
 ### Python Development
 
-#### Modern Python Setup with uv
+#### Modern Python with uv
 
 ```bash
-# Install uv (modern Python package installer)
 brew install uv
-
-# Create a new project
 mkdir myproject && cd myproject
-
-# Initialize virtual environment with uv
 uv venv
-
-# Activate virtual environment
 source .venv/bin/activate
-
-# Install packages blazingly fast
-uv pip install pandas numpy torch
-
-# Generate requirements.txt
+uv pip install pandas numpy torch ruff pytest poetry pdm rich httpx pydantic hatch pyright
 uv pip freeze > requirements.txt
-
-# Install from requirements.txt
-uv pip install -r requirements.txt
-
-# Pro Tip: Use with mise (or asdf) to manage Python versions
-mise use python@3.12
-uv pip install poetry ruff pytest
 ```
 
-#### Python Best Practices
-
-```bash
-# Install modern Python tools
-uv pip install \
-    ruff \        # Fast linter + formatter
-    pytest \      # Testing
-    poetry \      # Dependency management
-    pdm \         # Modern package manager
-    rich \        # Beautiful terminal output
-    httpx \       # Modern HTTP client
-    pydantic      # Data validation
-
-# Configure ruff (in pyproject.toml)
-[tool.ruff]
-line-length = 88
-target-version = "py312"
-```
-
-> **ADDITION**: Other notable Python tools:
->
-> ```bash
-> uv pip install hatch        # Newer Python project management
-> uv pip install pyright      # Type checking
-> ```
+**Note**: Choose between `poetry`, `pdm`, or `hatch` based on your workflow—each excels at dependency management.
 
 ### IDE & Editor Setup
 
-I primarily use **Cursor** and **VS Code**.  
-*(No extension suggestions here.)*
+Use **Cursor** or **VS Code**.  
+**Optional**: Consider these extensions:
+
+- VS Code: `Python`, `GitLens`, `Docker`
+- Cursor: Built-in AI tools suffice for most tasks.
 
 ---
 
@@ -210,112 +186,63 @@ I primarily use **Cursor** and **VS Code**.
 
 ### Modern Container Setup
 
-#### OrbStack (Docker Alternative)
+#### OrbStack (with Docker Desktop Note)
 
 ```bash
 brew install --cask orbstack
-
-# Enable Kubernetes
 orb kubernetes enable
 ```
 
+**Note**: OrbStack is lightweight and ideal for most workflows. Use Docker Desktop (`brew install --cask docker`) if you need advanced Compose features or specific integrations.
+
 ### Infrastructure as Code
 
-#### Terraform & tfenv with OpenTofu
+#### Terraform & OpenTofu
 
 ```bash
-# tfenv for managing multiple Terraform versions
-brew install tfenv
-
-# Install and use the latest Terraform
+brew install tfenv opentofu
 tfenv install latest
 tfenv use latest
-
-# OpenTofu (fully open-source Terraform distribution)
-brew install opentofu
-
-# OpenTofu usage
 tofu init
-tofu workspace new dev
 ```
 
 ### Cloud CLI Tools
 
 ```bash
-# AWS CLI v2 with SSO
-brew install awscli
+brew install awscli kubectl k9s kubectx lens helm aws-nuke aws-vault steampipe session-manager-plugin
 aws configure sso
-
-# Modern K8s tools
-brew install \
-  kubectl \
-  k9s \
-  kubectx \
-  lens \
-  helm
 ```
-
-> **ADDITION**: Further AWS utilities
->
-> ```bash
-> brew install aws-nuke      # Cleanup entire AWS account
-> brew install aws-vault     # Secure AWS credentials
-> brew install steampipe     # SQL interface for cloud & SaaS APIs
-> ```
-
-> **ADDITION**: AWS Session Manager plugin (ECS task access, etc.)
->
-> ```bash
-> brew install session-manager-plugin
-> ```
 
 ---
 
 ## Security & Privacy 🔒
 
-### 1Password CLI Integration
+### 1Password CLI
 
 ```bash
-# Install
 brew install --cask 1password-cli
-
-# SSH Agent Integration
 op plugin init ssh
 ```
 
-### GPG & SSH Setup
+### GPG & SSH
 
 ```bash
-# Modern SSH key with security key support
 ssh-keygen -t ed25519-sk -C "your_email@example.com"
-
-# GPG for signing commits
 brew install gnupg
 gpg --full-generate-key
+git config --global user.signingkey <YOUR_GPG_KEY_ID>
+git config --global commit.gpgsign true
 ```
 
-> **ADDITION**: **age** - modern file encryption:
->
-> ```bash
-> brew install age
-> age-keygen -o key.txt
-> age -r KEY_HERE secretfile.txt > secretfile.txt.age
-> ```
+### File Encryption with age
 
-> **ADDITION**: Configure GPG for commit signing:
->
-> ```bash
-> # Find your GPG key ID
-> gpg --list-secret-keys --keyid-format=long
-> ```
->
-> **In this example**, 1234ABCD is the GPG key ID
->
-> ```bash
-> git config --global user.signingkey 1234ABCD`
-> git config --global commit.gpgsign true`
-> ```
->
+```bash
+brew install age
+age-keygen -o key.txt
+age -r <PUBLIC_KEY> secretfile.txt > secretfile.txt.age
+```
+
+**New Addition**: Backup with Time Machine or install `brew install --cask backblaze`.
 
 ---
 
@@ -324,49 +251,15 @@ gpg --full-generate-key
 ### Modern CLI Alternatives
 
 ```bash
-# Install modern alternatives
-brew install \
-  bat \         # cat replacement
-  exa \         # ls replacement
-  fd \          # find replacement
-  ripgrep \     # grep replacement
-  duf \         # df replacement
-  bottom \      # top replacement
-  zoxide \      # cd replacement
-  choose \      # cut replacement
-  sd \          # sed replacement
-  procs \       # ps replacement
-  dust \        # du replacement
-  tealdeer      # tldr replacement
+brew install bat exa fd ripgrep duf bottom zoxide choose sd procs dust tealdeer just difftastic hyperfine
 ```
-
-> **ADDITION**: **just** (command runner), **difftastic** (diff viewer), **hyperfine** (benchmarking):
->
-> ```bash
-> brew install just difftastic hyperfine
-> ```
 
 ### Git Enhancements
 
 ```bash
-# Install
-brew install \
-  git-delta \   # Better diff
-  lazygit \     # TUI
-  gh \          # GitHub CLI
-  git-flow-avh  # Git workflows
-
-# Configure
+brew install git-delta lazygit gh git-flow-avh git-absorb git-branchless
 git config --global core.pager "delta"
-git config --global interactive.diffFilter "delta --color-only"
 ```
-
-> **ADDITION**:
->
-> ```bash
-> brew install git-absorb      # Automatic fixup commits
-> brew install git-branchless  # Modern Git workflow
-> ```
 
 ---
 
@@ -375,24 +268,23 @@ git config --global interactive.diffFilter "delta --color-only"
 ### Shell Aliases
 
 ```bash
-# Add to ~/.zshrc
+# ~/.zshrc
 alias ls='exa --icons --git'
 alias ll='exa -l --icons --git'
-alias tree='exa --tree --icons'
 alias cat='bat --style=full'
 alias cd='z'
-alias vim='nvim'
 alias top='btm'
-alias find='fd'
-alias grep='rg'
 ```
 
 ### Keyboard Shortcuts
 
+Enhance Raycast with scripts:
+
 ```bash
-# Raycast Custom Scripts
-brew install swift-format
 mkdir -p ~/.raycast/scripts
+# Example: Create a script to open your dev folder
+echo '#!/bin/bash\nopen ~/dev' > ~/.raycast/scripts/dev.sh
+chmod +x ~/.raycast/scripts/dev.sh
 ```
 
 ---
@@ -402,115 +294,54 @@ mkdir -p ~/.raycast/scripts
 ### System Maintenance
 
 ```bash
-# Cleanup script
-brew cleanup
-brew autoremove
-brew doctor
-
-# Update everything
+brew cleanup && brew autoremove && brew doctor
 brew update && brew upgrade
-mas upgrade
 ```
 
 ### Performance Monitoring
 
 ```bash
-# Install monitoring tools
-brew install \
-  htop \
-  btop \
-  glances \
-  speedtest-cli \
-  neofetch
+brew install htop btop glances speedtest-cli neofetch vector grafana prometheus
 ```
 
-> **ADDITION**: Modern observability tools:
->
-> ```bash
-> brew install vector   # Data pipeline
-> brew install grafana  # Metrics visualization
-> brew install prometheus
-> ```
-
-### **Disk Cleanup & Large File Hunting** (ADDITION)
+### Disk Cleanup
 
 ```bash
-# 1. Install ncdu (Terminal-based disk usage analyzer)
-brew install ncdu
-
-# 2. Run ncdu on home directory
+brew install ncdu dust
 ncdu ~
-
-# Use arrow keys to navigate. Press 'd' to delete large/unwanted files or directories.
-
-# 3. Alternatively, find all files larger than 100MB
-sudo find / -type f -size +100M -exec ls -lh {} \; 2>/dev/null
-
-# 4. Use 'dust' (already installed) to get a visual overview of directory sizes
 dust ~
 ```
-
-**Pro tip**: Always check twice before deleting. If you’re uncertain about a file, consider moving it to a temporary folder before permanent removal.
 
 ---
 
 ## Troubleshooting
 
-1. **Permissions**  
-   If you get `permission denied` errors with Homebrew, run:
-
-   ```bash
-   sudo chown -R $(whoami) /usr/local/*
-   sudo chown -R $(whoami) /opt/homebrew/*
-   ```
-
-2. **SSH Key Issues**  
-   Check `~/.ssh/config` for misconfigurations.
-
-3. **Runtime Manager Conflicts**  
-   When switching between `mise` and `asdf`, ensure only one is active in your shell.
-
-4. **OrbStack vs. Docker**  
-   Make sure Docker is not occupying the same ports if you run OrbStack simultaneously.
-
-5. **Kubernetes Networking**  
-   If you install other CNI plugins, ensure they’re not conflicting with OrbStack’s Kubernetes networking.
+- **Permissions**: `sudo chown -R $(whoami) /opt/homebrew/*`
+- **SSH Issues**: Verify `~/.ssh/config`.
+- **OrbStack Conflicts**: Stop Docker Desktop if ports clash.
+- **Kubernetes**: Check CNI plugin compatibility.
 
 ---
 
 ## Pro Tips 💡
 
-1. **Modern Node Development**
+1. **Bun for Node.js**:
 
    ```bash
-   # Install Bun (Super fast Node.js runtime & package manager)
    curl -fsSL https://bun.sh/install | bash
-
-   # Add to ~/.zshrc
-   export BUN_INSTALL="$HOME/.bun"
-   export PATH="$BUN_INSTALL/bin:$PATH"
-
-   # Initialize a new project
    bun init
-
-   # Install dependencies (3x faster than npm)
    bun install
+   ```
 
-   # Run scripts
-   bun run dev
+2. **Faster Navigation**:
 
-   # Use as a package manager
-   bun add react next @types/react
-   bun add -d @types/node typescript
+   ```bash
+   zoxide init zsh >> ~/.zshrc
+   z myproject  # Jumps to ~/myproject
+   ```
 
-   # Run TypeScript/JavaScript files
-   bun index.ts
+3. **Virtualization** (Optional):
 
-   # Use as a test runner
-   bun test
-
-   # Package management
-   bun pm ls    # List packages
-   bun update   # Update dependencies
-   bun pm cache # Manage cache
+   ```bash
+   brew install --cask utm  # Lightweight VMs
    ```
